@@ -29,3 +29,23 @@ db_clean<-function(df){
   return(df)
 
 }
+
+
+#' create_empty_df
+#'
+#' create an empty dataframe
+#' @param n.cols number of columns
+#' @param col.names column names
+#' @export
+#' @examples
+#' create_empty_df(n.cols,col.names)
+
+create_empty_df<-function(n.cols,col.names){
+
+   df <- as.data.frame(matrix(0,nrow=0,ncol=n.cols),stringsAsFactors=F)
+   colnames(df)<-col.names
+
+  return(df)
+
+}
+
