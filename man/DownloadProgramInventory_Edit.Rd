@@ -4,16 +4,13 @@
 \alias{DownloadProgramInventory_Edit}
 \title{DownloadProgramInventory_Edit}
 \usage{
-DownloadProgramInventory_Edit(fname, BudgetID = NULL, ItemMeta1 = NULL,
-  db_name, CostModelInfo, CostModelID, include.sheets = c("Program Inventory",
-  "BudgetInfo", "ProgBudgetInfo"))
+DownloadProgramInventory_Edit(fname, db_name, CostModelInfo, CostModelID,
+  BudgetID = NULL, ItemMeta1 = NULL,
+  include.sheets = c("Program Inventory", "BudgetInfo", "ProgBudgetInfo"),
+  include.RX_ProgID = T)
 }
 \arguments{
 \item{fname}{If using for download template provide this}
-
-\item{BudgetID}{Table name to update}
-
-\item{ItemMeta1}{Subset by a user group}
 
 \item{db_name}{}
 
@@ -21,7 +18,13 @@ DownloadProgramInventory_Edit(fname, BudgetID = NULL, ItemMeta1 = NULL,
 
 \item{CostModelID}{Costmodel ID to use, typically the one from the PBB cost model}
 
+\item{BudgetID}{Table name to update}
+
+\item{ItemMeta1}{Subset by a user group}
+
 \item{include.sheets}{Which sheets to include in the list of standard templates}
+
+\item{include.RX_ProgID}{Include the RX_ProgID that relates back to master list}
 }
 \description{
 Some standard templates for ProgInventory and Costs

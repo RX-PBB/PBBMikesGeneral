@@ -8,12 +8,16 @@
 #' @param CostModelInfo The cost model info table
 #' @param CostModelID Costmodel ID to use, typically the one from the PBB cost model
 #' @param include.sheets Which sheets to include in the list of standard templates
+#' @param include.RX_ProgID Include the RX_ProgID that relates back to master list
 #' @export
 #' @examples
 #' ProgInfo<-DownloadProgramInventory_Edit(fname=NULL,BudgetID=NULL,ItemMeta1=NULL,CostModelInfo,CostModelID)
 
 
-DownloadProgramInventory_Edit<-function(fname,BudgetID=NULL,ItemMeta1=NULL,db_name,CostModelInfo,CostModelID,include.sheets=c('Program Inventory','BudgetInfo','ProgBudgetInfo')){
+DownloadProgramInventory_Edit<-function(fname,db_name,CostModelInfo,CostModelID,
+                                        BudgetID=NULL,ItemMeta1=NULL,
+                                        include.sheets=c('Program Inventory','BudgetInfo','ProgBudgetInfo'),
+                                        include.RX_ProgID=T){
 
 
   Div1Name=CostModelInfo$Div1Name
@@ -39,7 +43,7 @@ DownloadProgramInventory_Edit<-function(fname,BudgetID=NULL,ItemMeta1=NULL,db_na
     RX_ProgID<-NULL
     RX_ProgID.col<-NULL
     RX_ProgID.width<-NULL
-    if(user()=='admin'){
+    if(include.RX_ProgID==T){
 
       if (is.element('RX_ProgID',colnames(Programs))){
         RX_ProgID<-'RX_ProgID'
