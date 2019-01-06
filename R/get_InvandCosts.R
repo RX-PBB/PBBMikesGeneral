@@ -1,6 +1,6 @@
 #' get_InvandCosts
 #'
-#' SQL table update function
+#' Get Program Inventory Costs and Revenue
 #' @param BudgetID BudegtID to pull
 #' @param db_name Table name to update
 #' @param CostModelName Typically "PBB"
@@ -132,7 +132,7 @@ get_InvandCosts<-function(BudgetID,db_name,CostModelName='PBB'){
 
   #ProgInfo<-ProgInfo[c('ProgID','ItemMeta1','ProgDept','ProgDiv','ProgNum','ProgName','ProgDescription')]
   #ProgInfo<-ProgInfo[order(ProgInfo$ItemMeta1),]
-  ProgInfo<-DownloadProgramInventory_Edit(fname=NULL,BudgetID=NULL,ItemMeta1=NULL,include.sheets=c('Program Inventory'))
+  ProgInfo<-DownloadProgramInventory_Edit(fname=NULL,BudgetID=NULL,ItemMeta1=NULL,db_name,CostModelInfo,CostModelID,include.sheets=c('Program Inventory'))
   #browser()
 
   data<-list()

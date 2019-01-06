@@ -14,7 +14,7 @@ get_InvandCosts(BudgetID, db_name, CostModelName = "PBB")
 \item{CostModelName}{Typically "PBB"}
 }
 \description{
-SQL table update function
+Get Program Inventory Costs and Revenue
 }
 \examples{
 data<-get_InvandCosts(BudgetID=1,db_name='RX_Training5')
