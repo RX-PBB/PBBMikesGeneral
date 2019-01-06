@@ -4,7 +4,7 @@
 \alias{get_InvandCosts}
 \title{get_InvandCosts}
 \usage{
-get_InvandCosts(BudgetID, db_name, CostModelName = "PBB")
+get_InvandCosts(BudgetID, db_name, CostModelName = "PBB", ItemMeta1 = NULL)
 }
 \arguments{
 \item{BudgetID}{BudegtID to pull}

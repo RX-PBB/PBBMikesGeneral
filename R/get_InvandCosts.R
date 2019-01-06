@@ -9,7 +9,7 @@
 #' data<-get_InvandCosts(BudgetID=1,db_name='RX_Training5')
 
 
-get_InvandCosts<-function(BudgetID,db_name,CostModelName='PBB'){
+get_InvandCosts<-function(BudgetID,db_name,CostModelName='PBB',ItemMeta1=NULL){
 
   con <- dbConnect(MySQL(),
                    user="mtseman",
@@ -26,6 +26,11 @@ get_InvandCosts<-function(BudgetID,db_name,CostModelName='PBB'){
 
   statement<-paste("SELECT * FROM ItemInfo WHERE BudgetID=",BudgetID," AND CostModelID=",CostModelID,";",sep='')
   ItemInfo<-dbGetQuery(con,statement)
+
+  if(!is.null(ItemMeta1)){
+
+    ItemInfo<-selectInput_filter(ItemInfo,filter=ItemMeta1,col.filter='ItemMeta1',all.option='All Available')
+  }
 
   AcctIDs<-unique(ItemInfo$AcctID)
   statement<-paste("SELECT * FROM AcctInfo WHERE AcctID IN ",create_IDstring(AcctIDs),";",sep='')
