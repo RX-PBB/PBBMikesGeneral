@@ -32,48 +32,55 @@ get_InvandCosts<-function(BudgetID,db_name,CostModelName='PBB',ItemMeta1=NULL){
     ItemInfo<-selectInput_filter(ItemInfo,filter=ItemMeta1,col.filter='ItemMeta1',all.option='All Available')
   }
 
-  AcctIDs<-unique(ItemInfo$AcctID)
-  statement<-paste("SELECT * FROM AcctInfo WHERE AcctID IN ",create_IDstring(AcctIDs),";",sep='')
-  AcctInfo<-dbGetQuery(con,statement)
+  if(nrow(ItemInfo)>0){
+    AcctIDs<-unique(ItemInfo$AcctID)
+    statement<-paste("SELECT * FROM AcctInfo WHERE AcctID IN ",create_IDstring(AcctIDs),";",sep='')
+    AcctInfo<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM FundInfo WHERE CostModelID=",CostModelID,";",sep='')
-  FundInfo<-dbGetQuery(con,statement)
+    ItemIDs<-unique(ItemInfo$ItemID)
+    statement<-paste("SELECT * FROM Alloc WHERE ItemID IN ",create_IDstring(ItemIDs),";",sep='')
+    Alloc<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div1Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div1Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM FundInfo WHERE CostModelID=",CostModelID,";",sep='')
+    FundInfo<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div2Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div2Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div1Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div1Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div3Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div3Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div2Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div2Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div4Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div4Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div3Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div3Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div5Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div5Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div4Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div4Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div6Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div6Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div5Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div5Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div7Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div7Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div6Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div6Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Div8Info WHERE CostModelID=",CostModelID,";",sep='')
-  Div8Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div7Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div7Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Obj1Info WHERE CostModelID=",CostModelID,";",sep='')
-  Obj1Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Div8Info WHERE CostModelID=",CostModelID,";",sep='')
+    Div8Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Obj2Info WHERE CostModelID=",CostModelID,";",sep='')
-  Obj2Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Obj1Info WHERE CostModelID=",CostModelID,";",sep='')
+    Obj1Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Obj3Info WHERE CostModelID=",CostModelID,";",sep='')
-  Obj3Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Obj2Info WHERE CostModelID=",CostModelID,";",sep='')
+    Obj2Info<-dbGetQuery(con,statement)
 
-  statement<-paste("SELECT * FROM Obj4Info WHERE CostModelID=",CostModelID,";",sep='')
-  Obj4Info<-dbGetQuery(con,statement)
+    statement<-paste("SELECT * FROM Obj3Info WHERE CostModelID=",CostModelID,";",sep='')
+    Obj3Info<-dbGetQuery(con,statement)
+
+    statement<-paste("SELECT * FROM Obj4Info WHERE CostModelID=",CostModelID,";",sep='')
+    Obj4Info<-dbGetQuery(con,statement)
+  }
+
 
   statement<-paste("SELECT * FROM ProgBudgetInfo WHERE BudgetID=",BudgetID,";",sep='')
   ProgBudgetInfo<-dbGetQuery(con,statement)
@@ -84,60 +91,67 @@ get_InvandCosts<-function(BudgetID,db_name,CostModelName='PBB',ItemMeta1=NULL){
 
   dbDisconnect(con)
 
+  if(nrow(ItemInfo)>0){
 
-  df<-merge(ItemInfo,AcctInfo,by=c('AcctID','CostModelID'))
-  df<-merge(df,FundInfo[c('FundID','Fund')],by='FundID')
-  df<-merge(df,Div1Info[c('Div1ID','Div1')],by='Div1ID')
-  df<-merge(df,Div2Info[c('Div2ID','Div2')],by='Div2ID')
-  df<-merge(df,Div3Info[c('Div3ID','Div3')],by='Div3ID')
-  df<-merge(df,Div4Info[c('Div4ID','Div4')],by='Div4ID')
-  df<-merge(df,Div5Info[c('Div5ID','Div5')],by='Div5ID')
-  df<-merge(df,Div6Info[c('Div6ID','Div6')],by='Div6ID')
-  df<-merge(df,Div7Info[c('Div7ID','Div7')],by='Div7ID')
-  df<-merge(df,Div8Info[c('Div8ID','Div8')],by='Div8ID')
+    df<-merge(ItemInfo,AcctInfo,by=c('AcctID','CostModelID'))
+    df<-merge(df,FundInfo[c('FundID','Fund')],by='FundID')
+    df<-merge(df,Div1Info[c('Div1ID','Div1')],by='Div1ID')
+    df<-merge(df,Div2Info[c('Div2ID','Div2')],by='Div2ID')
+    df<-merge(df,Div3Info[c('Div3ID','Div3')],by='Div3ID')
+    df<-merge(df,Div4Info[c('Div4ID','Div4')],by='Div4ID')
+    df<-merge(df,Div5Info[c('Div5ID','Div5')],by='Div5ID')
+    df<-merge(df,Div6Info[c('Div6ID','Div6')],by='Div6ID')
+    df<-merge(df,Div7Info[c('Div7ID','Div7')],by='Div7ID')
+    df<-merge(df,Div8Info[c('Div8ID','Div8')],by='Div8ID')
 
-  df<-merge(df,Obj1Info[c('Obj1ID','Obj1')],by='Obj1ID')
-  df<-merge(df,Obj2Info[c('Obj2ID','Obj2')],by='Obj2ID')
-  df<-merge(df,Obj3Info[c('Obj3ID','Obj3')],by='Obj3ID')
-  df<-merge(df,Obj4Info[c('Obj4ID','Obj4')],by='Obj4ID')
+    df<-merge(df,Obj1Info[c('Obj1ID','Obj1')],by='Obj1ID')
+    df<-merge(df,Obj2Info[c('Obj2ID','Obj2')],by='Obj2ID')
+    df<-merge(df,Obj3Info[c('Obj3ID','Obj3')],by='Obj3ID')
+    df<-merge(df,Obj4Info[c('Obj4ID','Obj4')],by='Obj4ID')
 
-  fields<-c('ItemID','AcctID','ItemMeta1','TotalCost','ObjType','AcctType','NumberOfItems','Obj1','Obj2','Obj3','Obj4','Fund','Div1','Div2','Div3','Div4','Div5','Div6','Div7',
-            'Div8')
+    fields<-c('ItemID','AcctID','ItemMeta1','TotalCost','ObjType','AcctType','NumberOfItems','Obj1','Obj2','Obj3','Obj4','Fund','Div1','Div2','Div3','Div4','Div5','Div6','Div7',
+              'Div8')
 
-  df<-df[fields]
-  colnames(df)[colnames(df)=='Div1']<-CostModelInfo$Div1Name
-  colnames(df)[colnames(df)=='Div2']<-CostModelInfo$Div2Name
-  colnames(df)[colnames(df)=='Div3']<-CostModelInfo$Div3Name
-  colnames(df)[colnames(df)=='Div4']<-CostModelInfo$Div4Name
-  colnames(df)[colnames(df)=='Div5']<-CostModelInfo$Div5Name
-  colnames(df)[colnames(df)=='Div6']<-CostModelInfo$Div6Name
-  colnames(df)[colnames(df)=='Div7']<-CostModelInfo$Div7Name
-  colnames(df)[colnames(df)=='Div8']<-CostModelInfo$Div8Name
+    df<-df[fields]
+    colnames(df)[colnames(df)=='Div1']<-CostModelInfo$Div1Name
+    colnames(df)[colnames(df)=='Div2']<-CostModelInfo$Div2Name
+    colnames(df)[colnames(df)=='Div3']<-CostModelInfo$Div3Name
+    colnames(df)[colnames(df)=='Div4']<-CostModelInfo$Div4Name
+    colnames(df)[colnames(df)=='Div5']<-CostModelInfo$Div5Name
+    colnames(df)[colnames(df)=='Div6']<-CostModelInfo$Div6Name
+    colnames(df)[colnames(df)=='Div7']<-CostModelInfo$Div7Name
+    colnames(df)[colnames(df)=='Div8']<-CostModelInfo$Div8Name
 
-  Personnel<-df[df$ObjType=='Personnel',]
-  colnames(Personnel)[colnames(Personnel)=='Obj1']<-CostModelInfo$Obj1NameP
-  colnames(Personnel)[colnames(Personnel)=='Obj2']<-CostModelInfo$Obj2NameP
-  colnames(Personnel)[colnames(Personnel)=='Obj3']<-CostModelInfo$Obj3NameP
-  colnames(Personnel)[colnames(Personnel)=='Obj4']<-CostModelInfo$Obj4NameP
+    Personnel<-df[df$ObjType=='Personnel',]
+    colnames(Personnel)[colnames(Personnel)=='Obj1']<-CostModelInfo$Obj1NameP
+    colnames(Personnel)[colnames(Personnel)=='Obj2']<-CostModelInfo$Obj2NameP
+    colnames(Personnel)[colnames(Personnel)=='Obj3']<-CostModelInfo$Obj3NameP
+    colnames(Personnel)[colnames(Personnel)=='Obj4']<-CostModelInfo$Obj4NameP
 
-  Personnel<-Personnel[ , -which(colnames(Personnel) %in% c('ObjType','AcctType','Div1','Div2','Div3','Div4','Div5','Div6','Div7','Div8','Obj1','Obj2','Obj3','Obj4'))]
-  Personnel<-Personnel[order(Personnel$ItemMeta1),]
+    Personnel<-Personnel[ , -which(colnames(Personnel) %in% c('ObjType','AcctType','Div1','Div2','Div3','Div4','Div5','Div6','Div7','Div8','Obj1','Obj2','Obj3','Obj4'))]
+    Personnel<-Personnel[order(Personnel$ItemMeta1),]
 
-  NonPersonnel<-df[df$ObjType=='NonPersonnel',]
-  colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj1']<-CostModelInfo$Obj1Name
-  colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj2']<-CostModelInfo$Obj2Name
-  colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj3']<-CostModelInfo$Obj3Name
-  colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj4']<-CostModelInfo$Obj4Name
+    NonPersonnel<-df[df$ObjType=='NonPersonnel',]
+    colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj1']<-CostModelInfo$Obj1Name
+    colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj2']<-CostModelInfo$Obj2Name
+    colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj3']<-CostModelInfo$Obj3Name
+    colnames(NonPersonnel)[colnames(NonPersonnel)=='Obj4']<-CostModelInfo$Obj4Name
 
-  NonPersonnel<-NonPersonnel[ , -which(colnames(NonPersonnel) %in% c('ObjType','Div1','Div2','Div3','Div4','Div5','Div6','Div7','Div8','Obj1','Obj2','Obj3','Obj4'))]
-  NonPersonnel<-NonPersonnel[order(NonPersonnel$AcctType,NonPersonnel$ItemMeta1),]
+    NonPersonnel<-NonPersonnel[ , -which(colnames(NonPersonnel) %in% c('ObjType','Div1','Div2','Div3','Div4','Div5','Div6','Div7','Div8','Obj1','Obj2','Obj3','Obj4'))]
+    NonPersonnel<-NonPersonnel[order(NonPersonnel$AcctType,NonPersonnel$ItemMeta1),]
 
-  Revenue<-NonPersonnel[NonPersonnel$AcctType=='Revenue',]
-  NonPersonnel<-NonPersonnel[NonPersonnel$AcctType=='Expense',]
+    Revenue<-NonPersonnel[NonPersonnel$AcctType=='Revenue',]
+    NonPersonnel<-NonPersonnel[NonPersonnel$AcctType=='Expense',]
 
+  }else{
+    Personnel<-NULL
+    NonPersonnel<-NULL
+    Revenue<-NULL
+    Alloc<-NULL
+  }
   #ProgInfo<-ProgInfo[c('ProgID','ItemMeta1','ProgDept','ProgDiv','ProgNum','ProgName','ProgDescription')]
   #ProgInfo<-ProgInfo[order(ProgInfo$ItemMeta1),]
-  ProgInfo<-DownloadProgramInventory_Edit(fname=NULL,BudgetID=NULL,ItemMeta1=NULL,db_name,CostModelInfo,CostModelID,include.sheets=c('Program Inventory'))
+  #ProgInfo<-DownloadProgramInventory_Edit(fname=NULL,BudgetID=NULL,ItemMeta1=NULL,db_name,CostModelInfo,CostModelID,include.sheets=c('Program Inventory'))
   #browser()
 
   data<-list()
@@ -145,6 +159,7 @@ get_InvandCosts<-function(BudgetID,db_name,CostModelName='PBB',ItemMeta1=NULL){
   data$Personnel<-Personnel
   data$NonPersonnel<-NonPersonnel
   data$Revenue<-Revenue
+  data$Alloc<-Alloc
 
   return(data)
 }
